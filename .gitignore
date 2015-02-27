@@ -2,7 +2,6 @@ reports/
 out/
 logs/
 gauge_bin/
-libs/
 sahi/userdata/browser
 sahi/userdata/certs
 sahi/userdata/logs
