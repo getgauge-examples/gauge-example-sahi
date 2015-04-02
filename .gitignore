@@ -6,7 +6,5 @@ sahi/userdata/browser
 sahi/userdata/certs
 sahi/userdata/logs
 sahi/userdata/temp
-.idea/workspace.xml
-.idea/tasks.xml
-.idea/find.xml
+.idea
 
