@@ -1,35 +1,31 @@
 package com.thoughtworks.gauge.example.pages;
 
-import com.thoughtworks.gauge.Step;
 import com.thoughtworks.gauge.example.BrowserFactory;
 import net.sf.sahi.client.Browser;
 
 public class ProductListPage extends BasePage {
     private final Browser browser;
-    private String productsUrl = Url.concat("products/");
+
+    private static String PRODUCTS_URL = adminUrl.concat("products/");
 
     public ProductListPage() {
         this.browser = BrowserFactory.getBrowser();
     }
 
-    @Step("On product page")
-    public void openProductsPage() {
-        browser.navigateTo(productsUrl);
+    public void openFirstProduct() {
+        browser.byXPath("//table/tbody/tr[1]/td[1]/a").click();
     }
 
-    @Step("Search for product <name>")
-    public void searchProduct(String title) {
+    public void navigate() {
+        browser.navigateTo(PRODUCTS_URL);
+    }
+
+    public String getProductId() {
+        return browser.byXPath("//table/tbody/tr[1]/td").getText();
+    }
+
+    public void search(String title) {
         browser.byId("q_title").setValue(title);
-        browser.byId("q_submit").click();
+        browser.submit("commit").click();
     }
-
-    @Step("Open description for product <name>")
-    public void viewProductDescription(String name) {
-        openFirstProduct();
-    }
-
-    private void openFirstProduct() {
-        browser.image("Not available").click();
-    }
-
 }

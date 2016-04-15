@@ -15,6 +15,16 @@ A sample project illustrating [Gauge](http://getgauge.io) features using [sahi](
 sahi.install_dir = SAHI_INSTALLATION_PATH
 ````
 
+# Setting up the System Under Test (SUT)
+
+* Download [activeadmin-demo.war](https://bintray.com/artifact/download/gauge/activeadmin-demo/activeadmin-demo.war)
+* Bring up the SUT by executing the below command
+```
+java -jar activeadmin-demo.war
+```
+* The SUT should now be available at [http://localhost:8080/](http://localhost:8080)
+
+
 # Executing specs
 
 ## Command line

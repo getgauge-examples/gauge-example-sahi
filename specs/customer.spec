@@ -1,6 +1,5 @@
 Customers
 =========
-
 Specifications are defined via H1 tag, you could either use the syntax above or "# Customers"
 
 The below is a context step, gets executed before every scenario. Every unordered list is a step.
@@ -11,13 +10,14 @@ The below is a scenario, defined via H2 tag. You could also use "## Search for a
 
 Search for a customer
 ---------------------
-tags: customer
+tags: admin, customer, search
 
-* Search for customer "user"
-* The customer "user" is listed
+* Search for customer "ScroogeMcduck"
+* The customer "ScroogeMcduck" is listed
 
 Verify a bunch of customers
 ---------------------------
-
+tags: admin, customer, search
 Can use a csv datasource!
+
 * Search for customers <table:resources/user.csv>
