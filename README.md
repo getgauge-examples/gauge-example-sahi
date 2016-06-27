@@ -2,8 +2,8 @@
 A sample project illustrating [Gauge](http://getgauge.io) features using [sahi](http://sahipro.com/sahi-open-source) to run browser tests.
 
 ## Prerequisites
-- [Install Gauge](http://getgauge.io/download.html)
-- [Install Gauge-Java plugin](http://getgauge.io/documentation/user/current/plugins/installation.html) by running ```gauge --install java```
+- [Install Gauge](http://getgauge.io/get-started/index.html)
+- [Install Gauge-Java plugin](http://getgauge.io/documentation/user/current/installations/install_plugins.html) by running ```gauge --install java```
 - [Install Sahi open source](http://sahi.sourceforge.net/install.html)
 - [Gauge Intellij plugin](http://getgauge.io/documentation/user/current/ide_support/intellij_idea.html) - To write and execute specs.
 
@@ -39,7 +39,7 @@ gauge --env chrome specs/
 ````
 ## Intellij plugin
 * Right click on the spec or specs directory and select Run.
-* [Lean more about the Intellij addon](http://getgauge.io/documentation/user/current/ide_support/intellij_idea.html#5-execution)
+* [Lean more about the Intellij addon](http://getgauge.io/documentation/user/current/ide_support/features.html#execution)
 
 ### Executing against Internet Explorer
 - The [system proxy settings](http://windows.microsoft.com/en-in/windows/change-internet-explorer-proxy-server-settings#1TC=windows-7) need to be configured before executing spec on IE
