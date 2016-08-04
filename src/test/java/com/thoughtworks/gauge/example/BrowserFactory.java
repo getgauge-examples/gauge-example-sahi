@@ -7,6 +7,9 @@ import net.sf.sahi.client.Browser;
 import net.sf.sahi.config.Configuration;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.BindException;
+import java.net.ServerSocket;
 
 public class BrowserFactory {
 
@@ -17,7 +20,7 @@ public class BrowserFactory {
     private static Proxy proxy;
 
     @BeforeSuite
-    public void setup() {
+    public void setup() throws IOException {
         String sahiInstallDir = System.getenv("sahi.install_dir");
         if (sahiInstallDir == null || sahiInstallDir.isEmpty()) {
             throw new RuntimeException("Sahi Install directory not specified. Set in env/default/sahi_config.properties file");
@@ -36,10 +39,29 @@ public class BrowserFactory {
         }
     }
 
-    private void launchBrowser() {
+    private void launchBrowser() throws IOException {
         int port = portNumber();
+        System.out.println("Starting SAHI proxy on port "+ port);
         startProxy(port);
-        browser = new Browser(browserName(), LOCAL_HOST, port);
+        String browserName = System.getenv("sahi.browser_name");
+        int runnerId = DEFAULT_PORT - port;
+        switch (browserName.toLowerCase())
+        {
+            case "chrome":
+                browser = new Browser("open -n -a \"Google Chrome.app\"",
+                        "Google Chrome",
+                        "--args --new-window --incognito --user-data-dir=" + userDataDir() + "/browser/chrome/profiles/sahi" + runnerId + " --proxy-server=localhost:" + port + " --disable-popup-blocking",
+                        LOCAL_HOST,
+                        port);
+                break;
+            case "firefox":
+            default:
+                browser = new Browser("open -n -a \"Firefox.app\"",
+                        "Firefox",
+                        "--args -profile \""+ userDataDir()+"/browser/ff/profiles/sahi"+ runnerId +"\" -no-remote -new-window",
+                        LOCAL_HOST,
+                        port);
+        }
         browser.open();
     }
 
@@ -53,8 +75,21 @@ public class BrowserFactory {
         return browser;
     }
 
-    private int portNumber() {
-        return DEFAULT_PORT;
+    private int portNumber() throws IOException {
+        for (int port = DEFAULT_PORT ; port > 9000; port--) {
+            int freePort;
+            try {
+                ServerSocket serverSocket = new ServerSocket(port);
+                freePort= serverSocket.getLocalPort();
+                serverSocket.close();
+            } catch (IOException ex) {
+                continue; // try next port
+            }
+            return freePort;
+        }
+
+        // if the program gets here, no port in the range was found
+        throw new IOException("no free port found");
     }
 
     private String browserName() {
