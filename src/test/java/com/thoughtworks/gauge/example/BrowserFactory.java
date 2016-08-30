@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.BindException;
 import java.net.ServerSocket;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class BrowserFactory {
 
@@ -76,28 +77,11 @@ public class BrowserFactory {
     }
 
     private int portNumber() throws IOException {
-        for (int port = DEFAULT_PORT ; port > 9000; port--) {
-            int freePort;
-            try {
-                ServerSocket serverSocket = new ServerSocket(port);
-                freePort= serverSocket.getLocalPort();
-                serverSocket.close();
-            } catch (IOException ex) {
-                continue; // try next port
-            }
-            return freePort;
-        }
-
-        // if the program gets here, no port in the range was found
-        throw new IOException("no free port found");
-    }
-
-    private String browserName() {
-        String browserName = System.getenv("sahi.browser_name");
-        if (!(browserName == null || browserName.isEmpty())) {
-            return  browserName;
-        }
-        return DEFAULT_BROWSER;
+        int port = ThreadLocalRandom.current().nextInt(9000, DEFAULT_PORT+1);
+        ServerSocket serverSocket = new ServerSocket(port);
+        int freePort= serverSocket.getLocalPort();
+        serverSocket.close();
+        return freePort;
     }
 
     private String userDataDir() {
