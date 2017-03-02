@@ -8,17 +8,13 @@ import net.sf.sahi.config.Configuration;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.BindException;
 import java.net.ServerSocket;
-import java.util.concurrent.ThreadLocalRandom;
 
 public class BrowserFactory {
 
-    public static final String LOCAL_HOST = "localhost";
-    private static final String DEFAULT_BROWSER = "firefox";
-    private static final int DEFAULT_PORT = 9999;
-    private static Browser browser;
-    private static Proxy proxy;
+    private static final String LOCAL_HOST = "localhost";
+    private static ThreadLocal<Browser> browser = ThreadLocal.withInitial(() -> null);
+    private static ThreadLocal<Proxy> proxy = ThreadLocal.withInitial(() -> null);
 
     @BeforeSuite
     public void setup() throws IOException {
@@ -32,65 +28,56 @@ public class BrowserFactory {
 
     @AfterSuite
     public void tearDown() {
-        if (browser != null) {
-            browser.close();
+        if (getBrowser() != null) {
+            getBrowser().close();
         }
-        if (proxy != null && proxy.isRunning()) {
-            proxy.stop();
+        if (getProxy() != null && getProxy().isRunning()) {
+            getProxy().stop();
         }
     }
 
     private void launchBrowser() throws IOException {
         int port = portNumber();
-        System.out.println("Starting SAHI proxy on port "+ port);
+        System.out.println("Starting SAHI proxy on port " + port);
         startProxy(port);
-        String browserName = System.getenv("sahi.browser_name");
-        int runnerId = DEFAULT_PORT - port;
-        switch (browserName.toLowerCase())
-        {
-            case "chrome":
-                browser = new Browser("open -n -a \"Google Chrome.app\"",
-                        "Google Chrome",
-                        "--args --new-window --incognito --user-data-dir=" + userDataDir() + "/browser/chrome/profiles/sahi" + runnerId + " --proxy-server=localhost:" + port + " --disable-popup-blocking",
-                        LOCAL_HOST,
-                        port);
-                break;
-            case "firefox":
-            default:
-                browser = new Browser("open -n -a \"Firefox.app\"",
-                        "Firefox",
-                        "--args -profile \""+ userDataDir()+"/browser/ff/profiles/sahi"+ runnerId +"\" -no-remote -new-window",
-                        LOCAL_HOST,
-                        port);
-        }
-        browser.open();
+        int runnerId = 9999 - port;
+        browser.set(new Browser("open -n -a \"Google Chrome.app\"",
+                "\"Google Chrome\"",
+                "--args --new-window --incognito --user-data-dir=" + userDataDir() + "/browser/chrome/profiles/sahi" + runnerId + " --proxy-server=localhost:" + port + " --disable-popup-blocking",
+                LOCAL_HOST,
+                port));
+        getBrowser().open();
     }
 
     private void startProxy(int port) {
-        proxy = new Proxy(port);
-        proxy.start(true);
-        waitForProxy(10000);
+        Proxy p = new Proxy(port);
+        p.start(true);
+        proxy.set(p);
+        waitForProxy();
+    }
+
+    private Proxy getProxy() {
+        return proxy.get();
     }
 
     public static Browser getBrowser() {
-        return browser;
+        return browser.get();
     }
 
     private int portNumber() throws IOException {
-        int port = ThreadLocalRandom.current().nextInt(9000, DEFAULT_PORT+1);
-        ServerSocket serverSocket = new ServerSocket(port);
-        int freePort= serverSocket.getLocalPort();
-        serverSocket.close();
-        return freePort;
+        ServerSocket s = new ServerSocket(0);
+        int p = s.getLocalPort();
+        s.close();
+        return p;
     }
 
     private String userDataDir() {
         return new File("sahi", "userdata").getAbsolutePath();
     }
 
-    private void waitForProxy(int waitUntil) {
+    private void waitForProxy() {
         int counter = 0;
-        while(!proxy.isRunning() && counter < waitUntil) {
+        while (!getProxy().isRunning() && counter < 10000) {
             try {
                 Thread.sleep(1000);
                 counter += 1000;
@@ -98,8 +85,7 @@ public class BrowserFactory {
                 e.printStackTrace();
             }
         }
-
-        if (!proxy.isRunning()) {
+        if (!getProxy().isRunning()) {
             throw new RuntimeException("Sahi Proxy server is not starting");
         }
     }
