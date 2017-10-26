@@ -30,12 +30,12 @@ java -jar activeadmin-demo.war
 ## Command line
 ### All specs
 ````
-gauge specs/
+gauge run specs/
 ````
 
 ### Run against chrome browser
 ````
-gauge --env chrome specs/
+gauge run --env chrome specs
 ````
 ## Intellij plugin
 * Right click on the spec or specs directory and select Run.
