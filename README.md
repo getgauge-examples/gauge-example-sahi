@@ -5,7 +5,7 @@ A sample project illustrating [Gauge](http://getgauge.io) features using [sahi](
 - [Install Gauge](http://getgauge.io/get-started/index.html)
 - Install Gauge Java plugin by running ```gauge install java```
 - [Install Sahi open source](http://sahi.sourceforge.net/install.html)
-- [Gauge Intellij plugin](http://getgauge.io/documentation/user/current/ide_support/intellij_idea.html) - To write and execute specs.
+- [Gauge Intellij plugin](https://plugins.jetbrains.com/plugin/7535-gauge) - To write and execute specs.
 
 ## Configuration
 - Set the sahi installation path property in the **env/default/sahi_config.properties file**
