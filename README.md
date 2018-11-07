@@ -22,7 +22,7 @@ sahi.install_dir = SAHI_INSTALLATION_PATH
 ```
 java -jar activeadmin-demo.war
 ```
-* The SUT should now be available at [http://localhost:8080/](http://localhost:8080)
+* The SUT should now be available at http://localhost:8080
 
 
 # Executing specs
@@ -50,4 +50,4 @@ port: 9999
 ````
 
 # Copyright
-Copyright 2015, ThoughtWorks Inc.
+Copyright 2018, ThoughtWorks Inc.
