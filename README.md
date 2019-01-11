@@ -39,7 +39,7 @@ gauge run --env chrome specs
 ````
 ## Intellij plugin
 * Right click on the spec or specs directory and select Run.
-* [Lean more about the Intellij addon](http://getgauge.io/documentation/user/current/ide_support/features.html#execution)
+* [Lean more about the Intellij addon](https://github.com/getgauge/Intellij-Plugin)
 
 ### Executing against Internet Explorer
 - The [system proxy settings](http://windows.microsoft.com/en-in/windows/change-internet-explorer-proxy-server-settings#1TC=windows-7) need to be configured before executing spec on IE
