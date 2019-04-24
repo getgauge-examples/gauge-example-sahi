@@ -1,5 +1,5 @@
-# Gauge example project in Java using [Sahi](http://sahipro.com/sahi-open-source/)
-A sample project illustrating [Gauge](http://getgauge.io) features using [sahi](http://sahipro.com/sahi-open-source) to run browser tests.
+# Gauge example project in Java using [Sahi](http://sahipro.com/)
+A sample project illustrating [Gauge](http://getgauge.io) features using [sahi](http://sahipro.com/) to run browser tests.
 
 ## Prerequisites
 - [Install Gauge](http://getgauge.io/get-started/index.html)
