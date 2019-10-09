@@ -2,7 +2,7 @@
 A sample project illustrating [Gauge](http://getgauge.io) features using [sahi](http://sahipro.com/) to run browser tests.
 
 ## Prerequisites
-- [Install Gauge](http://getgauge.io/get-started/index.html)
+- [Install Gauge](https://docs.gauge.org/getting_started/installing-gauge.html)
 - Install Gauge Java plugin by running ```gauge install java```
 - [Install Sahi open source](http://sahi.sourceforge.net/install.html)
 - [Gauge Intellij plugin](https://plugins.jetbrains.com/plugin/7535-gauge) - To write and execute specs.
